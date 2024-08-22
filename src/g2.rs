@@ -16,8 +16,10 @@ use group::WnafGroup;
 
 use crate::fp::Fp;
 use crate::fp2::Fp2;
+use crate::hash_to_curve::{ExpandMsgXmd, HashToCurve};
 use crate::Scalar;
 
+const DST: &[u8] = b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_POP_";
 /// This is an element of $\mathbb{G}_2$ represented in the affine coordinate space.
 /// It is ideal to keep elements in this representation to reduce memory usage and
 /// improve performance through the use of mixed curve model arithmetic.
@@ -792,6 +794,12 @@ impl G2Projective {
 
         G2Projective::conditional_select(&tmp, &G2Projective::identity(), self.is_identity())
     }
+
+    /// Hash a message to the curve
+    pub fn hash_to_curve_g2(msg: &[u8]) -> G2Projective {
+        <G2Projective as HashToCurve<ExpandMsgXmd<sha2::Sha256>>>::hash_to_curve(msg, DST)
+    }
+
 
     /// Adds this point to another point.
     pub fn add(&self, rhs: &G2Projective) -> G2Projective {

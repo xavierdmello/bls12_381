@@ -48,6 +48,10 @@ mod scalar;
 
 pub use scalar::Scalar;
 
+/// Module containing various type definitions for compatibility with milagro_bls in SP1
+pub mod types;
+pub use types::{PublicKey, AggregateSignature};
+
 #[cfg(feature = "groups")]
 pub mod fp;
 #[cfg(feature = "groups")]

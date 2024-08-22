@@ -356,6 +356,28 @@ impl Scalar {
         (&Scalar(val)).mul(&R2)
     }
 
+    /// Converts from a hex string into its `Scalar` representation.
+    pub fn from_hex(hex: &str) -> Option<Self> {
+        if hex.len() != 64 {
+            return None;
+        }
+
+        let mut raw = [0u64; 4];
+        for (i, chunk) in hex.as_bytes().chunks(16).enumerate().take(4) {
+            if let Ok(hex_chunk) = core::str::from_utf8(chunk) {
+                if let Ok(value) = u64::from_str_radix(hex_chunk, 16) {
+                    raw[3 - i] = value.to_le();
+                } else {
+                    return None;
+                }
+            } else {
+                return None;
+            }
+        }
+
+        Some(Scalar::from_raw(raw))
+    }
+    
     #[inline]
     /// CPU version of the square operation. Necessary to prevent syscalls in unconstrained mode.
     fn cpu_square(&self) -> Scalar {

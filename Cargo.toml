@@ -15,6 +15,10 @@ edition = "2021"
 [package.metadata.docs.rs]
 rustdoc-args = ["--html-in-header", "katex-header.html"]
 
+[dependencies]
+eyre = "0.6.12"
+sha2 = "0.9"
+
 [dev-dependencies]
 csv = ">= 1.0, < 1.2" # csv 1.2 has MSRV 1.60
 criterion = "0.3"
@@ -71,7 +75,7 @@ git = "https://github.com/succinctlabs/sp1"
 branch = "dev"
 
 [features]
-default = ["groups", "pairings", "alloc", "bits"]
+default = ["groups", "pairings", "alloc", "bits", "experimental"]
 bits = ["ff/bits"]
 groups = ["group"]
 pairings = ["groups", "pairing"]
